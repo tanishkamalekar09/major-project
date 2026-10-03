@@ -36,6 +36,7 @@ from .services.ocr import OCRResult
 app.include_router(ocr_router, prefix="/api/v1")
 
 @app.post("/api/v1/analyze", response_model=OCRResult)
+@app.post("/api/analyze", response_model=OCRResult)
 async def analyze_alias(
     file: UploadFile = File(..., description="Packaged product image file"),
     use_mock: bool = Query(False, description="Whether to use Mock OCR instead of Real OCR")

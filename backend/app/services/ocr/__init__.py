@@ -1,16 +1,29 @@
 from .base import BaseOCRService, OCRResult, OCRTextBlock
 from .mock_ocr import MockOCRService
+from .real_ocr import RealOCRService
 
-# When your teammate's model is ready, import their implementation here:
-# from .team_ocr import TeamOCRService
+# Cache instance so EasyOCR models are loaded once into memory
+_real_ocr_instance = None
 
-def get_ocr_service() -> BaseOCRService:
+def get_ocr_service(use_mock: bool = False) -> BaseOCRService:
     """
     Factory function returning the active OCR service.
-    Currently returns the Mock OCR Service.
-    When your teammate's OCR implementation is ready,
-    simply return their service instance here!
+    Returns RealOCRService (EasyOCR CRAFT + CRNN) by default.
     """
-    return MockOCRService()
+    global _real_ocr_instance
+    if use_mock:
+        return MockOCRService()
 
-__all__ = ["BaseOCRService", "OCRResult", "OCRTextBlock", "MockOCRService", "get_ocr_service"]
+    if _real_ocr_instance is None:
+        _real_ocr_instance = RealOCRService()
+
+    return _real_ocr_instance
+
+__all__ = [
+    "BaseOCRService",
+    "OCRResult",
+    "OCRTextBlock",
+    "MockOCRService",
+    "RealOCRService",
+    "get_ocr_service",
+]

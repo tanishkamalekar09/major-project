@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   FileCode, 
   Copy, 
@@ -10,22 +10,74 @@ import {
   Sparkles, 
   CheckCircle2,
   Filter,
-  Eye
+  Eye,
+  Layers,
+  Image as ImageIcon
 } from 'lucide-react';
 import { InspectionStepper } from '../components/common/InspectionStepper';
-import { MOCK_OCR_BLOCKS, CURRENT_INSPECTION } from '../data/mockData';
+import { MOCK_OCR_BLOCKS } from '../data/mockData';
+import { OCRResult, OCRTextBlock } from '../types';
+import { getActiveInspection } from '../services/inspectionStore';
 
 export const OCRResultsPage: React.FC = () => {
+  const location = useLocation();
+  const navState = (location.state as any) || {};
+  const activeInspection = getActiveInspection();
+
+  const ocrResult = navState.ocrResult as OCRResult | undefined || activeInspection.ocrResult;
+  const autoDetectedInfo = navState.autoDetectedInfo as any | undefined || activeInspection.autoDetectedInfo;
+  const imagePreview = navState.imagePreview || activeInspection.annotated_image || activeInspection.image_url;
+  const originalImage = navState.originalImage || activeInspection.original_image || imagePreview;
+
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'blocks' | 'raw'>('blocks');
+  const [displayMode, setDisplayMode] = useState<'annotated' | 'interactive'>(
+    ocrResult?.annotated_image ? 'annotated' : 'interactive'
+  );
 
-  const filteredBlocks = MOCK_OCR_BLOCKS.filter(b => 
+  interface DisplayBlock {
+    id: string;
+    text: string;
+    confidence: number;
+    category?: string;
+    box: { x: number; y: number; width: number; height: number };
+  }
+
+  // Normalize blocks
+  const activeBlocks: DisplayBlock[] = 
+    ocrResult && ocrResult.blocks && ocrResult.blocks.length > 0
+      ? ocrResult.blocks.map((b: OCRTextBlock, idx: number) => ({
+          id: b.id || `ocr-block-${idx + 1}`,
+          text: b.text,
+          confidence: b.confidence,
+          category: 'text',
+          box: {
+            x: b.box?.x ?? 0,
+            y: b.box?.y ?? 0,
+            width: b.box?.w ?? b.box?.width ?? 0,
+            height: b.box?.h ?? b.box?.height ?? 0,
+          },
+        }))
+      : MOCK_OCR_BLOCKS.map(b => ({
+          id: b.id,
+          text: b.text,
+          confidence: b.confidence,
+          category: b.category,
+          box: {
+            x: b.box.x,
+            y: b.box.y,
+            width: b.box.width,
+            height: b.box.height,
+          }
+        }));
+
+  const filteredBlocks = activeBlocks.filter(b => 
     b.text.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const rawTextContent = MOCK_OCR_BLOCKS.map(b => b.text).join('\n');
+  const rawTextContent = ocrResult?.raw_text || activeBlocks.map(b => b.text).join('\n');
 
   const handleCopyRaw = () => {
     navigator.clipboard.writeText(rawTextContent);
@@ -49,6 +101,7 @@ export const OCRResultsPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <Link
             to="/inspect/detected-info"
+            state={{ ocrResult, autoDetectedInfo, imagePreview, originalImage }}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition"
           >
             <span>Step 4: Detected Info</span>
@@ -57,67 +110,105 @@ export const OCRResultsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Teammate OCR Pluggable Architecture Note */}
-      <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex items-start gap-3 text-xs">
-        <Cpu className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-        <div>
-          <span className="font-bold">OCR Abstraction Layer Notice:</span> Currently powered by{' '}
-          <code className="bg-amber-100 px-1 py-0.5 rounded font-mono text-[11px]">MockOCRService</code>. 
-          When your teammate finishes developing the OCR model, it will plug seamlessly into{' '}
-          <code className="bg-amber-100 px-1 py-0.5 rounded font-mono text-[11px]">backend/app/services/ocr/base.py</code>{' '}
-          without modifying any frontend pages.
+      {/* OCR Status Banner */}
+      <div className={`p-4 rounded-xl border flex items-start gap-3 text-xs ${
+        ocrResult 
+          ? 'bg-emerald-50 border-emerald-200 text-emerald-950' 
+          : 'bg-amber-50 border-amber-200 text-amber-900'
+      }`}>
+        <Cpu className={`w-5 h-5 shrink-0 mt-0.5 ${ocrResult ? 'text-emerald-600' : 'text-amber-600'}`} />
+        <div className="flex-1">
+          <span className="font-bold">Active Engine:</span>{' '}
+          <code className="bg-white/80 px-1.5 py-0.5 rounded font-mono text-[11px] font-semibold">
+            {ocrResult?.engine_name || 'Mock OCR (Demo)'}
+          </code>
+          {ocrResult?.processing_time_ms ? (
+            <span className="ml-2 font-mono text-[11px] text-emerald-800">
+              • Latency: {ocrResult.processing_time_ms} ms • Detected: {activeBlocks.length} text elements
+            </span>
+          ) : (
+            <span className="ml-2 text-slate-600">
+              (Upload a custom package image in Step 1 to trigger the live EasyOCR CRAFT + CRNN pipeline)
+            </span>
+          )}
         </div>
       </div>
 
       {/* Main Content Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Interactive Label with Bounding Box Overlay (5 cols) */}
+        {/* Left: Label with Bounding Box Overlay / Annotated Image (5 cols) */}
         <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
               <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
                 <Eye className="w-4 h-4 text-blue-600" />
-                <span>Interactive Label Bounding Map</span>
+                <span>Product Packaging View</span>
               </h3>
-              <span className="text-[10px] text-slate-400">Click a box to inspect</span>
+
+              {ocrResult?.annotated_image && (
+                <div className="flex items-center bg-slate-100 p-0.5 rounded-lg text-[10px] font-semibold">
+                  <button
+                    onClick={() => setDisplayMode('annotated')}
+                    className={`px-2 py-1 rounded transition ${
+                      displayMode === 'annotated' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600'
+                    }`}
+                  >
+                    AI Annotated
+                  </button>
+                  <button
+                    onClick={() => setDisplayMode('interactive')}
+                    className={`px-2 py-1 rounded transition ${
+                      displayMode === 'interactive' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600'
+                    }`}
+                  >
+                    Interactive
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="relative rounded-xl overflow-hidden border border-slate-300 bg-slate-900 aspect-[3/4] flex items-center justify-center">
-              <img 
-                src={CURRENT_INSPECTION.image_url} 
-                alt="Product Label" 
-                className="w-full h-full object-cover opacity-85"
-              />
+              {displayMode === 'annotated' && ocrResult?.annotated_image ? (
+                <img 
+                  src={ocrResult.annotated_image} 
+                  alt="AI Annotated Product Label" 
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <>
+                  <img 
+                    src={originalImage || imagePreview} 
+                    alt="Product Label" 
+                    className="w-full h-full object-contain opacity-90"
+                  />
 
-              {/* Interactive Bounding Boxes */}
-              {MOCK_OCR_BLOCKS.map((block) => {
-                const isSelected = selectedBlockId === block.id;
-                return (
-                  <div
-                    key={block.id}
-                    onClick={() => setSelectedBlockId(block.id)}
-                    style={{
-                      left: `${block.box.x}%`,
-                      top: `${block.box.y}%`,
-                      width: `${block.box.width}%`,
-                      height: `${block.box.height}%`,
-                    }}
-                    className={`absolute border-2 cursor-pointer transition-all duration-150 flex items-start p-0.5 ${
-                      isSelected
-                        ? 'border-yellow-400 bg-yellow-400/30 z-20 shadow-md ring-2 ring-yellow-300'
-                        : block.category === 'legal'
-                        ? 'border-blue-400 bg-blue-500/10 hover:bg-blue-500/30'
-                        : block.category === 'ingredient'
-                        ? 'border-purple-400 bg-purple-500/10 hover:bg-purple-500/30'
-                        : 'border-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/30'
-                    }`}
-                  >
-                    <span className="text-[8px] bg-slate-900/90 text-white font-mono px-1 rounded truncate pointer-events-none">
-                      {Math.round(block.confidence * 100)}%
-                    </span>
-                  </div>
-                );
-              })}
+                  {/* Interactive Bounding Boxes */}
+                  {activeBlocks.map((block) => {
+                    const isSelected = selectedBlockId === block.id;
+                    return (
+                      <div
+                        key={block.id}
+                        onClick={() => setSelectedBlockId(block.id)}
+                        style={{
+                          left: `${block.box.x}%`,
+                          top: `${block.box.y}%`,
+                          width: `${block.box.width}%`,
+                          height: `${block.box.height}%`,
+                        }}
+                        className={`absolute border-2 cursor-pointer transition-all duration-150 flex items-start p-0.5 ${
+                          isSelected
+                            ? 'border-yellow-400 bg-yellow-400/30 z-20 shadow-md ring-2 ring-yellow-300'
+                            : 'border-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/30'
+                        }`}
+                      >
+                        <span className="text-[8px] bg-slate-900/90 text-white font-mono px-1 rounded truncate pointer-events-none">
+                          {Math.round(block.confidence * 100)}%
+                        </span>
+                      </div>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </div>
 
@@ -144,7 +235,7 @@ export const OCRResultsPage: React.FC = () => {
                     viewMode === 'blocks' ? 'bg-white text-slate-900 shadow-subtle' : 'text-slate-500'
                   }`}
                 >
-                  Block Inspector ({MOCK_OCR_BLOCKS.length})
+                  Block Inspector ({activeBlocks.length})
                 </button>
                 <button
                   onClick={() => setViewMode('raw')}
@@ -233,6 +324,7 @@ export const OCRResultsPage: React.FC = () => {
             </span>
             <Link
               to="/inspect/detected-info"
+              state={{ ocrResult, autoDetectedInfo, imagePreview, originalImage }}
               className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-md shadow-blue-500/20 flex items-center gap-2 transition"
             >
               <span>Next: View Detected Information</span>

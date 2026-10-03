@@ -1,0 +1,222 @@
+[
+  {
+    "text": "BRITANNIA",
+    "confidence": 0.9793,
+    "bbox": [
+      301,
+      31,
+      549,
+      75
+    ]
+  },
+  {
+    "text": "GOOD DAY BUTTER COOKIES",
+    "confidence": 0.876,
+    "bbox": [
+      204,
+      100,
+      648,
+      132
+    ]
+  },
+  {
+    "text": "Net Weight:",
+    "confidence": 0.9999,
+    "bbox": [
+      44,
+      190,
+      184,
+      222
+    ]
+  },
+  {
+    "text": "200 g",
+    "confidence": 0.6397,
+    "bbox": [
+      376,
+      190,
+      440,
+      220
+    ]
+  },
+  {
+    "text": "MRP (incl: of all taxes):",
+    "confidence": 0.5885,
+    "bbox": [
+      44,
+      242,
+      312,
+      274
+    ]
+  },
+  {
+    "text": "Rs. 50.00",
+    "confidence": 0.6893,
+    "bbox": [
+      378,
+      244,
+      482,
+      270
+    ]
+  },
+  {
+    "text": "Unit Sale Price:",
+    "confidence": 0.7704,
+    "bbox": [
+      44,
+      298,
+      224,
+      326
+    ]
+  },
+  {
+    "text": "Rs. 0.25 /g",
+    "confidence": 0.6497,
+    "bbox": [
+      378,
+      298,
+      498,
+      328
+    ]
+  },
+  {
+    "text": "Batch No",
+    "confidence": 0.6869,
+    "bbox": [
+      44,
+      352,
+      154,
+      378
+    ]
+  },
+  {
+    "text": "B240912A",
+    "confidence": 0.9978,
+    "bbox": [
+      378,
+      350,
+      490,
+      378
+    ]
+  },
+  {
+    "text": "Date of Manufacture:",
+    "confidence": 0.7939,
+    "bbox": [
+      44,
+      406,
+      286,
+      432
+    ]
+  },
+  {
+    "text": "12/09/2026",
+    "confidence": 1.0,
+    "bbox": [
+      378,
+      404,
+      500,
+      434
+    ]
+  },
+  {
+    "text": "Best Before:",
+    "confidence": 0.9401,
+    "bbox": [
+      44,
+      460,
+      188,
+      486
+    ]
+  },
+  {
+    "text": "Months from packaging",
+    "confidence": 0.9998,
+    "bbox": [
+      398,
+      460,
+      644,
+      492
+    ]
+  },
+  {
+    "text": "FSSAI Lic. No.-",
+    "confidence": 0.4998,
+    "bbox": [
+      42,
+      514,
+      214,
+      540
+    ]
+  },
+  {
+    "text": "10015042001850",
+    "confidence": 1.0,
+    "bbox": [
+      378,
+      512,
+      566,
+      542
+    ]
+  },
+  {
+    "text": "Manufactured by: Britannia Industries Ltd.",
+    "confidence": 0.9351,
+    "bbox": [
+      44,
+      596,
+      402,
+      620
+    ]
+  },
+  {
+    "text": "Plot 12 , Industrial Area, Haridwar",
+    "confidence": 0.5719,
+    "bbox": [
+      408,
+      594,
+      698,
+      621
+    ]
+  },
+  {
+    "text": "Consumer Care: 1800 425 4449",
+    "confidence": 0.8207,
+    "bbox": [
+      42,
+      630,
+      326,
+      654
+    ]
+  },
+  {
+    "text": "feedback@britindia.com",
+    "confidence": 0.6962,
+    "bbox": [
+      334,
+      632,
+      548,
+      658
+    ]
+  },
+  {
+    "text": "100% VEGETARIAN",
+    "confidence": 0.9995,
+    "bbox": [
+      44,
+      665,
+      228,
+      690
+    ]
+  },
+  {
+    "text": "Store in cool; dry place",
+    "confidence": 0.6375,
+    "bbox": [
+      238,
+      668,
+      438,
+      694
+    ]
+  }
+]

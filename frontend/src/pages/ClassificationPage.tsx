@@ -12,9 +12,10 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { InspectionStepper } from '../components/common/InspectionStepper';
-import { CURRENT_INSPECTION } from '../data/mockData';
+import { getActiveInspection } from '../services/inspectionStore';
 
 export const ClassificationPage: React.FC = () => {
+  const activeInspection = getActiveInspection();
   const mandatoryRequirements = [
     { title: "Product Commercial & Common Name", standard: "FSSAI Reg 5(1)", required: "Mandatory on Principal Display Panel" },
     { title: "Complete Ingredients List", standard: "FSSAI Reg 5(2)", required: "Descending order by in-going weight (m/m)" },
@@ -67,17 +68,17 @@ export const ClassificationPage: React.FC = () => {
           <div className="space-y-3 text-xs">
             <div>
               <span className="text-slate-400 block mb-0.5">Primary Category:</span>
-              <p className="font-bold text-slate-900 text-sm">{CURRENT_INSPECTION.category}</p>
+              <p className="font-bold text-slate-900 text-sm">{activeInspection.category}</p>
             </div>
 
             <div>
               <span className="text-slate-400 block mb-0.5">Sub-Classification:</span>
-              <p className="font-semibold text-slate-800">{CURRENT_INSPECTION.subcategory}</p>
+              <p className="font-semibold text-slate-800">{activeInspection.subcategory}</p>
             </div>
 
             <div>
               <span className="text-slate-400 block mb-0.5">Package Type:</span>
-              <p className="font-semibold text-slate-800">{CURRENT_INSPECTION.package_type}</p>
+              <p className="font-semibold text-slate-800">{activeInspection.package_type}</p>
             </div>
 
             <div>
@@ -106,7 +107,7 @@ export const ClassificationPage: React.FC = () => {
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <div>
               <h3 className="font-bold text-sm text-slate-900">Mandatory Packaging Checklist Matrix</h3>
-              <p className="text-xs text-slate-400">Rules applied based on 250g Ready-to-Eat Food classification</p>
+              <p className="text-xs text-slate-400">Rules applied based on {activeInspection.declared_net_weight} {activeInspection.category} profile</p>
             </div>
             <span className="text-xs text-blue-600 font-semibold bg-blue-50 px-2.5 py-1 rounded-lg">
               9 Mandatory Points

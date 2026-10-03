@@ -4,19 +4,29 @@ from pydantic import BaseModel, Field
 
 class OCRTextBlock(BaseModel):
     """Represents a detected block or line of text from an image."""
+    id: Optional[str] = None
     text: str
     confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     bounding_box: Optional[List[float]] = None  # [x_min, y_min, x_max, y_max] or polygon points
+    box: Optional[dict] = None  # Normalized percent coordinates {x, y, w, h} for CSS overlay
+
+from ...schemas.extraction import OCRInfo, ProductInformation
 
 class OCRResult(BaseModel):
     """
-    Standardized output format for OCR services.
-    Whether using Mock OCR or your teammate's actual OCR model,
-    the output will always conform to this structure.
+    Standardized output format for OCR & Step 4 Extraction services.
+    Conforms to project requirements.
     """
     raw_text: str
     blocks: List[OCRTextBlock] = []
     engine_name: str = "mock-ocr"
+    annotated_image: Optional[str] = None
+    original_image: Optional[str] = None
+    processing_time_ms: Optional[float] = None
+
+    # STEP 4: Structured Information Extraction
+    ocr: Optional[OCRInfo] = None
+    product_information: Optional[ProductInformation] = None
 
 class BaseOCRService(ABC):
     """

@@ -64,12 +64,15 @@ export const ProductAnalysisPage: React.FC = () => {
       const extracted = extractProductInformation(result, file?.name || sampleId || navState.fileName);
       setExtractedInfo(extracted);
 
+      const classifiedCategory = result.classification?.category || extracted.category;
+      const classifiedSubcategory = result.classification?.subcategory || extracted.subcategory || 'Not detected';
+
       // Immediately synchronize active inspection store
       setActiveInspection({
         product_name: extracted.productTitle,
         brand: extracted.brand,
-        category: extracted.category,
-        subcategory: extracted.subcategory,
+        category: classifiedCategory,
+        subcategory: classifiedSubcategory,
         declared_net_weight: extracted.netWeight,
         image_url: result.annotated_image || imagePreview,
         annotated_image: result.annotated_image,
@@ -120,12 +123,14 @@ export const ProductAnalysisPage: React.FC = () => {
 
   const handleProceed = () => {
     const extracted = extractedInfo || extractProductInformation(ocrResult || undefined, file?.name || sampleId || navState.fileName);
+    const classifiedCategory = ocrResult?.classification?.category || extracted.category;
+    const classifiedSubcategory = ocrResult?.classification?.subcategory || extracted.subcategory || 'Not detected';
 
     setActiveInspection({
       product_name: extracted.productTitle,
       brand: extracted.brand,
-      category: extracted.category,
-      subcategory: extracted.subcategory,
+      category: classifiedCategory,
+      subcategory: classifiedSubcategory,
       declared_net_weight: extracted.netWeight,
       image_url: ocrResult?.annotated_image || imagePreview,
       annotated_image: ocrResult?.annotated_image,

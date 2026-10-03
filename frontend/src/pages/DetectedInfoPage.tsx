@@ -431,6 +431,70 @@ export const DetectedInfoPage: React.FC = () => {
         </div>
       </div>
 
+      {/* STEP 5: Product Classification Section */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-subtle space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-slate-900">
+                Product Classification
+              </h2>
+              <p className="text-xs text-slate-500">
+                Automated rule-based categorization based on OCR text, product title, and packaging indicators.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+              Step 5 Classifier
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+          {/* Category */}
+          <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50">
+            <span className="text-slate-400 text-xs font-medium block mb-1">Category</span>
+            <p className="text-base font-bold text-slate-900 break-words">
+              {ocrResult?.classification?.category || (activeInspection?.category && activeInspection.category !== 'Packaged Food & Commodity' ? activeInspection.category : 'Unknown')}
+            </p>
+          </div>
+
+          {/* Subcategory */}
+          <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50">
+            <span className="text-slate-400 text-xs font-medium block mb-1">Subcategory</span>
+            <p className="text-base font-bold text-slate-900 break-words">
+              {ocrResult?.classification && ocrResult.classification.category !== 'Unknown' && ocrResult.classification.subcategory
+                ? ocrResult.classification.subcategory
+                : 'Not detected'}
+            </p>
+          </div>
+
+          {/* Confidence */}
+          <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50">
+            <span className="text-slate-400 text-xs font-medium block mb-1">Confidence</span>
+            <p className="text-base font-bold text-slate-900">
+              {ocrResult?.classification && ocrResult.classification.category !== 'Unknown' && ocrResult.classification.confidence !== null && ocrResult.classification.confidence !== undefined
+                ? `${Math.round(ocrResult.classification.confidence * 100)}%`
+                : 'Not available'}
+            </p>
+          </div>
+
+          {/* Classification Method */}
+          <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50">
+            <span className="text-slate-400 text-xs font-medium block mb-1">Classification Method</span>
+            <p className="text-base font-bold text-slate-900">
+              {ocrResult?.classification && ocrResult.classification.category !== 'Unknown'
+                ? (ocrResult.classification.method === 'rule_based' ? 'Rule Based' : ocrResult.classification.method)
+                : (ocrResult?.classification?.method === 'insufficient_information' ? 'Insufficient Information' : 'Not available')}
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Visual Context & OCR Artifacts (Original Image, Annotated Image, Raw OCR Text) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Original Image & Annotated OCR Image Display (5 cols) */}

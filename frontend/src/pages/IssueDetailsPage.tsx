@@ -13,13 +13,16 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { InspectionStepper } from '../components/common/InspectionStepper';
-import { MOCK_COMPLIANCE_RULES, CURRENT_INSPECTION } from '../data/mockData';
+import { getActiveInspection } from '../services/inspectionStore';
+import { getDynamicComplianceRules } from '../services/genericExtractor';
 
 export const IssueDetailsPage: React.FC = () => {
-  const issues = MOCK_COMPLIANCE_RULES.filter(r => r.status === 'failed' || r.status === 'warning');
+  const activeInspection = getActiveInspection();
+  const complianceRules = getDynamicComplianceRules(activeInspection);
+  const issues = complianceRules.filter(r => r.status === 'failed' || r.status === 'warning');
   const [activeIssueId, setActiveIssueId] = useState<string>(issues[0]?.rule_id || '');
 
-  const activeIssue = issues.find(i => i.rule_id === activeIssueId) || issues[0];
+  const activeIssue = issues.find(i => i.rule_id === activeIssueId) || issues[0] || complianceRules[0];
 
   return (
     <div className="space-y-6 animate-fade-in">

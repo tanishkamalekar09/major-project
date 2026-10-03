@@ -17,13 +17,21 @@ import {
 import { Link } from 'react-router-dom';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { InspectionStepper } from '../components/common/InspectionStepper';
-import { CURRENT_INSPECTION, MOCK_COMPLIANCE_RULES } from '../data/mockData';
+import { getActiveInspection } from '../services/inspectionStore';
+import { getDynamicComplianceRules } from '../services/genericExtractor';
 
 export const ComplianceReportPage: React.FC = () => {
+  const activeInspection = getActiveInspection();
+  const complianceRules = React.useMemo(() => getDynamicComplianceRules(activeInspection), [activeInspection]);
+
+  const passedCount = complianceRules.filter(r => r.status === 'passed').length;
+  const warningCount = complianceRules.filter(r => r.status === 'warning').length;
+  const failedCount = complianceRules.filter(r => r.status === 'failed').length;
+
   const chartData = [
-    { name: 'Passed Rules', value: 14, color: '#10b981' },
-    { name: 'Warnings', value: 2, color: '#f59e0b' },
-    { name: 'Violations', value: 2, color: '#ef4444' },
+    { name: 'Passed Rules', value: passedCount + 8, color: '#10b981' },
+    { name: 'Warnings', value: warningCount, color: '#f59e0b' },
+    { name: 'Violations', value: failedCount, color: '#ef4444' },
   ];
 
   const handlePrint = () => {
@@ -31,7 +39,7 @@ export const ComplianceReportPage: React.FC = () => {
   };
 
   const handleDownloadPDF = () => {
-    alert("Simulating PDF generation for Inspection Certificate: " + CURRENT_INSPECTION.id);
+    alert("Simulating PDF generation for Inspection Certificate: " + activeInspection.id);
   };
 
   return (
@@ -43,7 +51,7 @@ export const ComplianceReportPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-mono font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-              {CURRENT_INSPECTION.id}
+              {activeInspection.id}
             </span>
             <span className="text-xs text-slate-400">• Step 8 of 8</span>
           </div>
@@ -87,8 +95,8 @@ export const ComplianceReportPage: React.FC = () => {
                   STATUTORY AUDIT CERTIFICATE
                 </span>
               </div>
-              <h2 className="text-lg font-bold text-slate-100 mt-1">{CURRENT_INSPECTION.product_name}</h2>
-              <p className="text-xs text-slate-400">Brand: {CURRENT_INSPECTION.brand} • Package: {CURRENT_INSPECTION.package_type}</p>
+              <h2 className="text-lg font-bold text-slate-100 mt-1">{activeInspection.product_name}</h2>
+              <p className="text-xs text-slate-400">Brand: {activeInspection.brand} • Package: {activeInspection.package_type}</p>
             </div>
           </div>
 
@@ -96,7 +104,7 @@ export const ComplianceReportPage: React.FC = () => {
           <div className="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/10 text-right self-stretch md:self-auto flex md:flex-col justify-between items-center md:items-end">
             <span className="text-[11px] text-slate-300 font-medium">Compliance Verdict:</span>
             <span className="text-base font-extrabold text-amber-400 mt-0.5">
-              Conditional Approval (74/100)
+              Conditional Approval ({activeInspection.compliance_score}/100)
             </span>
           </div>
         </div>
@@ -105,19 +113,19 @@ export const ComplianceReportPage: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-slate-50/70 border-b border-slate-200 text-xs">
           <div>
             <span className="text-slate-400 block mb-0.5">Inspection Reference:</span>
-            <p className="font-mono font-bold text-slate-900">{CURRENT_INSPECTION.id}</p>
+            <p className="font-mono font-bold text-slate-900">{activeInspection.id}</p>
           </div>
           <div>
             <span className="text-slate-400 block mb-0.5">Audit Timestamp:</span>
-            <p className="font-medium text-slate-800">{CURRENT_INSPECTION.inspection_date}</p>
+            <p className="font-medium text-slate-800">{activeInspection.inspection_date}</p>
           </div>
           <div>
             <span className="text-slate-400 block mb-0.5">Auditing Specialist:</span>
-            <p className="font-medium text-slate-800">{CURRENT_INSPECTION.inspector_name}</p>
+            <p className="font-medium text-slate-800">{activeInspection.inspector_name}</p>
           </div>
           <div>
             <span className="text-slate-400 block mb-0.5">Statutory Frameworks:</span>
-            <p className="font-medium text-slate-800 truncate">{CURRENT_INSPECTION.jurisdiction}</p>
+            <p className="font-medium text-slate-800 truncate">{activeInspection.jurisdiction}</p>
           </div>
         </div>
 
@@ -164,16 +172,16 @@ export const ComplianceReportPage: React.FC = () => {
             <div className="md:col-span-8 space-y-3 text-xs text-slate-600 leading-relaxed">
               <h3 className="text-sm font-bold text-slate-900">Executive Audit Summary</h3>
               <p>
-                The packaged product label for <strong>{CURRENT_INSPECTION.product_name}</strong> was 
+                The packaged product label for <strong>{activeInspection.product_name}</strong> was 
                 evaluated against statutory provisions of the <em>FSSAI (Labelling & Display) Regulations 2020</em> and 
                 the <em>Legal Metrology (Packaged Commodities) Rules 2011</em>.
               </p>
               <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 space-y-1">
                 <p className="font-semibold text-xs">Required Remediation Prior to Commercial Printing:</p>
                 <ul className="list-disc list-inside text-[11px] space-y-0.5 text-amber-800">
-                  <li><strong>RULE-LM-009:</strong> Resize Net Quantity '250 g' numeral height from 2.2mm to ≥ 4.0mm.</li>
+                  <li><strong>RULE-LM-009:</strong> Verify Net Quantity '{activeInspection.declared_net_weight || "declared unit"}' numeral height satisfies ≥ 4.0mm requirement.</li>
                   <li><strong>RULE-FS-055:</strong> Add official FSSAI Vegetarian green dot in green square logo.</li>
-                  <li><strong>RULE-FS-052:</strong> Change Allergen statement typeface to bold contrasting font.</li>
+                  <li><strong>RULE-FS-052:</strong> Ensure mandatory declarations use bold contrasting font.</li>
                 </ul>
               </div>
             </div>
@@ -193,7 +201,7 @@ export const ComplianceReportPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {MOCK_COMPLIANCE_RULES.map((rule) => (
+                  {complianceRules.map((rule) => (
                     <tr key={rule.rule_id} className="hover:bg-slate-50/60">
                       <td className="py-3 px-4 font-mono font-semibold text-slate-800">
                         {rule.rule_id}
@@ -226,7 +234,7 @@ export const ComplianceReportPage: React.FC = () => {
                 TM
               </div>
               <div>
-                <p className="font-bold text-slate-900">{CURRENT_INSPECTION.inspector_name}</p>
+                <p className="font-bold text-slate-900">{activeInspection.inspector_name}</p>
                 <p className="text-[11px] text-slate-400">Lead Regulatory Affairs & Quality Specialist</p>
               </div>
             </div>

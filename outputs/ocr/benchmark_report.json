@@ -1,0 +1,700 @@
+{
+  "total_images_evaluated": 10,
+  "average_key_entity_recall": 0.712,
+  "average_confidence": 0.8581,
+  "average_character_error_rate": 0.5449,
+  "average_word_error_rate": 0.4399,
+  "average_ocr_time_ms": 10059.76,
+  "image_details": [
+    {
+      "image": "product_01.jpg",
+      "ground_truth_count": 12,
+      "detected_count": 22,
+      "key_entity_recall": 0.5833,
+      "average_confidence": 0.8078,
+      "character_error_rate": 0.3867,
+      "word_error_rate": 0.3269,
+      "ocr_time_ms": 9618.429200000264,
+      "field_matches": [
+        {
+          "gt": "BRITANNIA",
+          "status": "EXACT_FOUND",
+          "matched_text": "BRITANNIA"
+        },
+        {
+          "gt": "GOOD DAY BUTTER COOKIES",
+          "status": "EXACT_FOUND",
+          "matched_text": "GOOD DAY BUTTER COOKIES"
+        },
+        {
+          "gt": "Net Weight: 200 g",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Weight: 200 g"
+        },
+        {
+          "gt": "MRP (incl. of all taxes): Rs. 50.00",
+          "status": "MISSED",
+          "similarity": 0.69,
+          "matched_text": "MRP (incl: of all taxes):"
+        },
+        {
+          "gt": "Unit Sale Price: Rs. 0.25 / g",
+          "status": "MISSED",
+          "similarity": 0.55,
+          "matched_text": "Unit Sale Price:"
+        },
+        {
+          "gt": "Batch No.: B240912A",
+          "status": "MISSED",
+          "similarity": 0.42,
+          "matched_text": "Batch No"
+        },
+        {
+          "gt": "Date of Manufacture: 12/09/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Date of Manufacture: 12/09/2026"
+        },
+        {
+          "gt": "Best Before: 6 Months from packaging",
+          "status": "MISSED",
+          "similarity": 0.58,
+          "matched_text": "Months from packaging"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10015042001850",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Britannia Industries Ltd.",
+          "status": "EXACT_FOUND",
+          "matched_text": "Britannia Industries Ltd."
+        },
+        {
+          "gt": "1800 425 4449",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800 425 4449"
+        },
+        {
+          "gt": "feedback@britindia.com",
+          "status": "EXACT_FOUND",
+          "matched_text": "feedback@britindia.com"
+        }
+      ]
+    },
+    {
+      "image": "product_02.jpg",
+      "ground_truth_count": 11,
+      "detected_count": 19,
+      "key_entity_recall": 0.7273,
+      "average_confidence": 0.8181,
+      "character_error_rate": 0.4869,
+      "word_error_rate": 0.4043,
+      "ocr_time_ms": 10915.359199999784,
+      "field_matches": [
+        {
+          "gt": "HALDIRAM'S",
+          "status": "EXACT_FOUND",
+          "matched_text": "HALDIRAM'S"
+        },
+        {
+          "gt": "ALOO BHUJIA SPICY POTATO NOODLES",
+          "status": "EXACT_FOUND",
+          "matched_text": "ALOO BHUJIA SPICY POTATO NOODLES"
+        },
+        {
+          "gt": "Net Quantity: 150 g",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Quantity: 150 g"
+        },
+        {
+          "gt": "MRP (Inclusive of all taxes): Rs. 40.00",
+          "status": "EXACT_FOUND",
+          "matched_text": "MRP (Inclusive of all taxes): Rs. 40.00"
+        },
+        {
+          "gt": "Batch / Lot No.: LOT-9921D",
+          "status": "MISSED",
+          "similarity": 0.35,
+          "matched_text": "LOT-9921D"
+        },
+        {
+          "gt": "Mfg Date: 01/10/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Mfg Date: 01/10/2026"
+        },
+        {
+          "gt": "Use By: 01/04/2027",
+          "status": "EXACT_FOUND",
+          "matched_text": "Use By: 01/04/2027"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10012011000167",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Haldiram Snacks Pvt. Ltd.",
+          "status": "MISSED",
+          "similarity": 0.36,
+          "matched_text": "HALDIRAM'S"
+        },
+        {
+          "gt": "customercare@haldirams.com",
+          "status": "EXACT_FOUND",
+          "matched_text": "customercare@haldirams.com"
+        },
+        {
+          "gt": "0120-2400123",
+          "status": "EXACT_FOUND",
+          "matched_text": "0120-2400123"
+        }
+      ]
+    },
+    {
+      "image": "product_03.jpg",
+      "ground_truth_count": 11,
+      "detected_count": 20,
+      "key_entity_recall": 0.8182,
+      "average_confidence": 0.8381,
+      "character_error_rate": 0.5344,
+      "word_error_rate": 0.4651,
+      "ocr_time_ms": 10769.394300000386,
+      "field_matches": [
+        {
+          "gt": "PARACHUTE",
+          "status": "EXACT_FOUND",
+          "matched_text": "PARACHUTE"
+        },
+        {
+          "gt": "100% PURE COCONUT OIL",
+          "status": "EXACT_FOUND",
+          "matched_text": "100% PURE COCONUT OIL"
+        },
+        {
+          "gt": "Net Volume: 250 ml",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Volume: 250 ml"
+        },
+        {
+          "gt": "Maximum Retail Price: Rs. 115.00",
+          "status": "MISSED",
+          "similarity": 0.66,
+          "matched_text": "Maximum Retail Price:"
+        },
+        {
+          "gt": "Batch Number: PC-8841",
+          "status": "EXACT_FOUND",
+          "matched_text": "Batch Number: PC-8841"
+        },
+        {
+          "gt": "Date of Packaging: 15/08/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Date of Packaging: 15/08/2026"
+        },
+        {
+          "gt": "Expiry Date: 24 Months from Packaging",
+          "status": "EXACT_FOUND",
+          "matched_text": "Expiry Date: 24 Months from Packaging"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10014022002611",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Marico Limited",
+          "status": "EXACT_FOUND",
+          "matched_text": "Marico Limited"
+        },
+        {
+          "gt": "1800 22 2248",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800 22 2248"
+        },
+        {
+          "gt": "ccc@marico.com",
+          "status": "EXACT_FOUND",
+          "matched_text": "ccc@marico.com"
+        }
+      ]
+    },
+    {
+      "image": "product_04.jpg",
+      "ground_truth_count": 11,
+      "detected_count": 22,
+      "key_entity_recall": 0.7273,
+      "average_confidence": 0.8739,
+      "character_error_rate": 0.5524,
+      "word_error_rate": 0.4889,
+      "ocr_time_ms": 10421.389399999953,
+      "field_matches": [
+        {
+          "gt": "DABUR",
+          "status": "EXACT_FOUND",
+          "matched_text": "DABUR"
+        },
+        {
+          "gt": "100% PURE NATURAL HONEY",
+          "status": "EXACT_FOUND",
+          "matched_text": "100% PURE NATURAL HONEY"
+        },
+        {
+          "gt": "Net Weight: 500 g",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Weight: 500 g"
+        },
+        {
+          "gt": "MRP (incl. of all taxes): Rs. 240.00",
+          "status": "MISSED",
+          "similarity": 0.39,
+          "matched_text": "of all taxes):"
+        },
+        {
+          "gt": "Batch No.: DH-7721",
+          "status": "MISSED",
+          "similarity": 0.44,
+          "matched_text": "Batch No"
+        },
+        {
+          "gt": "Pkd Date: 05/07/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Pkd Date: 05/07/2026"
+        },
+        {
+          "gt": "Best Before: 18 Months from packaging",
+          "status": "EXACT_FOUND",
+          "matched_text": "Best Before: 18 Months from packaging"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10013013000552",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Dabur India Limited",
+          "status": "EXACT_FOUND",
+          "matched_text": "Dabur India Limited"
+        },
+        {
+          "gt": "1800-103-1644",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800-103-1644"
+        },
+        {
+          "gt": "daburcares@dabur.com",
+          "status": "FUZZY_MATCH",
+          "similarity": 0.95,
+          "matched_text": "daburcares@dabur com"
+        }
+      ]
+    },
+    {
+      "image": "product_05.jpg",
+      "ground_truth_count": 11,
+      "detected_count": 22,
+      "key_entity_recall": 0.6364,
+      "average_confidence": 0.8703,
+      "character_error_rate": 0.4388,
+      "word_error_rate": 0.383,
+      "ocr_time_ms": 10808.524399999897,
+      "field_matches": [
+        {
+          "gt": "TATA SALT",
+          "status": "EXACT_FOUND",
+          "matched_text": "TATA SALT"
+        },
+        {
+          "gt": "VACUUM EVAPORATED IODIZED SALT",
+          "status": "EXACT_FOUND",
+          "matched_text": "VACUUM EVAPORATED IODIZED SALT"
+        },
+        {
+          "gt": "Net Weight: 1 kg",
+          "status": "MISSED",
+          "similarity": 0.69,
+          "matched_text": "Net Weight:"
+        },
+        {
+          "gt": "MRP (incl. of taxes): Rs. 28.00",
+          "status": "MISSED",
+          "similarity": 0.65,
+          "matched_text": "MRP (incl: of taxes):"
+        },
+        {
+          "gt": "Batch Identification: TS-4419",
+          "status": "EXACT_FOUND",
+          "matched_text": "Batch Identification: TS-4419"
+        },
+        {
+          "gt": "Date of Manufacture: 20/09/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Date of Manufacture: 20/09/2026"
+        },
+        {
+          "gt": "Best Before: 24 Months from MFD",
+          "status": "EXACT_FOUND",
+          "matched_text": "Best Before: 24 Months from MFD"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10014022002778",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Tata Consumer Products Ltd.",
+          "status": "MISSED",
+          "similarity": 0.3,
+          "matched_text": "TATA SALT"
+        },
+        {
+          "gt": "care@tataconsumer.com",
+          "status": "EXACT_FOUND",
+          "matched_text": "care@tataconsumer.com"
+        },
+        {
+          "gt": "1800-108-4488",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800-108-4488"
+        }
+      ]
+    },
+    {
+      "image": "product_06.jpg",
+      "ground_truth_count": 10,
+      "detected_count": 23,
+      "key_entity_recall": 0.7,
+      "average_confidence": 0.8886,
+      "character_error_rate": 0.684,
+      "word_error_rate": 0.4318,
+      "ocr_time_ms": 9568.169699999999,
+      "field_matches": [
+        {
+          "gt": "DETTOL",
+          "status": "EXACT_FOUND",
+          "matched_text": "DETTOL"
+        },
+        {
+          "gt": "ORIGINAL LIQUID HANDWASH",
+          "status": "EXACT_FOUND",
+          "matched_text": "ORIGINAL LIQUID HANDWASH"
+        },
+        {
+          "gt": "Net Quantity: 200 ml",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Quantity: 200 ml"
+        },
+        {
+          "gt": "MRP (inclusive of taxes): Rs. 99.00",
+          "status": "EXACT_FOUND",
+          "matched_text": "MRP (inclusive of taxes): Rs. 99.00"
+        },
+        {
+          "gt": "Batch / Lot: DT-9811",
+          "status": "MISSED",
+          "similarity": 0.35,
+          "matched_text": "DT-9811"
+        },
+        {
+          "gt": "Mfg Date: 10/06/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Mfg Date: 10/06/2026"
+        },
+        {
+          "gt": "Expiry Date: 09/06/2028",
+          "status": "EXACT_FOUND",
+          "matched_text": "Expiry Date: 09/06/2028"
+        },
+        {
+          "gt": "Drug Mfg Lic. No.: DL-8891-M",
+          "status": "MISSED",
+          "similarity": 0.43,
+          "matched_text": "Mfg Lic. No.="
+        },
+        {
+          "gt": "Reckitt Benckiser India Pvt. Ltd.",
+          "status": "MISSED",
+          "similarity": 0.24,
+          "matched_text": "10X BETTER GERM PROTECTION"
+        },
+        {
+          "gt": "1800 102 2727",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800 102 2727"
+        }
+      ]
+    },
+    {
+      "image": "product_07.jpg",
+      "ground_truth_count": 10,
+      "detected_count": 21,
+      "key_entity_recall": 0.6,
+      "average_confidence": 0.8884,
+      "character_error_rate": 0.549,
+      "word_error_rate": 0.4565,
+      "ocr_time_ms": 9195.301299999755,
+      "field_matches": [
+        {
+          "gt": "AMUL TAAZA",
+          "status": "EXACT_FOUND",
+          "matched_text": "AMUL TAAZA"
+        },
+        {
+          "gt": "HOMOGENISED TONED MILK",
+          "status": "EXACT_FOUND",
+          "matched_text": "HOMOGENISED TONED MILK"
+        },
+        {
+          "gt": "Net Volume: 1 L",
+          "status": "FUZZY_MATCH",
+          "similarity": 0.73,
+          "matched_text": "Net Volume:"
+        },
+        {
+          "gt": "MRP (incl. of all taxes): Rs. 72.00",
+          "status": "MISSED",
+          "similarity": 0.69,
+          "matched_text": "MRP (incl: of all taxes):"
+        },
+        {
+          "gt": "Batch Number: AT-202609",
+          "status": "EXACT_FOUND",
+          "matched_text": "Batch Number: AT-202609"
+        },
+        {
+          "gt": "Packing Date: 25/09/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Packing Date: 25/09/2026"
+        },
+        {
+          "gt": "Use By Date: 24/03/2027",
+          "status": "MISSED",
+          "similarity": 0.43,
+          "matched_text": "24/03/2027"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10012021000071",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Gujarat Co-operative Milk Marketing Federation Ltd.",
+          "status": "MISSED",
+          "similarity": 0.41,
+          "matched_text": "Marketed by: Gujarat Co-operative Milk Marketing Federation Ltd , Anand, Gujarat"
+        },
+        {
+          "gt": "1800 258 3333",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800 258 3333"
+        }
+      ]
+    },
+    {
+      "image": "product_08.jpg",
+      "ground_truth_count": 11,
+      "detected_count": 22,
+      "key_entity_recall": 0.7273,
+      "average_confidence": 0.8727,
+      "character_error_rate": 0.5992,
+      "word_error_rate": 0.5306,
+      "ocr_time_ms": 9868.906800000332,
+      "field_matches": [
+        {
+          "gt": "MAGGI",
+          "status": "EXACT_FOUND",
+          "matched_text": "MAGGI"
+        },
+        {
+          "gt": "2-MINUTE NOODLES MASALA",
+          "status": "EXACT_FOUND",
+          "matched_text": "2-MINUTE NOODLES MASALA"
+        },
+        {
+          "gt": "Net Weight: 70 g",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Weight: 70 g"
+        },
+        {
+          "gt": "MRP (incl. of taxes): Rs. 14.00",
+          "status": "MISSED",
+          "similarity": 0.65,
+          "matched_text": "MRP (incl: of taxes):"
+        },
+        {
+          "gt": "Unit Sale Price: Rs. 0.20 / g",
+          "status": "MISSED",
+          "similarity": 0.55,
+          "matched_text": "Unit Sale Price:"
+        },
+        {
+          "gt": "Batch Code: M-30198",
+          "status": "EXACT_FOUND",
+          "matched_text": "Batch Code: M-30198"
+        },
+        {
+          "gt": "Date of Mfg: 02/09/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Date of Mfg: 02/09/2026"
+        },
+        {
+          "gt": "Best Before: 9 Months from Manufacture",
+          "status": "EXACT_FOUND",
+          "matched_text": "Best Before: 9 Months from Manufacture"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10012011000168",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Nestle India Limited",
+          "status": "EXACT_FOUND",
+          "matched_text": "Nestle India Limited"
+        },
+        {
+          "gt": "1800 103 1947",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800 103 1947"
+        }
+      ]
+    },
+    {
+      "image": "product_09.jpg",
+      "ground_truth_count": 10,
+      "detected_count": 20,
+      "key_entity_recall": 0.8,
+      "average_confidence": 0.8704,
+      "character_error_rate": 0.6113,
+      "word_error_rate": 0.5238,
+      "ocr_time_ms": 9421.71419999977,
+      "field_matches": [
+        {
+          "gt": "HIMALAYAN",
+          "status": "EXACT_FOUND",
+          "matched_text": "HIMALAYAN"
+        },
+        {
+          "gt": "NATURAL MINERAL WATER",
+          "status": "EXACT_FOUND",
+          "matched_text": "NATURAL MINERAL WATER"
+        },
+        {
+          "gt": "Net Quantity: 750 ml",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Quantity: 750 ml"
+        },
+        {
+          "gt": "MRP (Inclusive of taxes): Rs. 65.00",
+          "status": "FUZZY_MATCH",
+          "similarity": 0.71,
+          "matched_text": "MRP (Inclusive of taxes):"
+        },
+        {
+          "gt": "Lot Number: HNW-551",
+          "status": "EXACT_FOUND",
+          "matched_text": "Lot Number: HNW-551"
+        },
+        {
+          "gt": "Date of Bottling: 14/09/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Date of Bottling: 14/09/2026"
+        },
+        {
+          "gt": "Best Before: 12 Months from bottling",
+          "status": "EXACT_FOUND",
+          "matched_text": "Best Before: 12 Months from bottling"
+        },
+        {
+          "gt": "FSSAI Lic. No.: 10016011003451",
+          "status": "MISSED",
+          "similarity": 0.47,
+          "matched_text": "FSSAI Lic. No.-"
+        },
+        {
+          "gt": "Tata Consumer Products Ltd.",
+          "status": "MISSED",
+          "similarity": 0.26,
+          "matched_text": "Date of Bottling:"
+        },
+        {
+          "gt": "1800-425-6677",
+          "status": "EXACT_FOUND",
+          "matched_text": "1800-425-6677"
+        }
+      ]
+    },
+    {
+      "image": "product_10.jpg",
+      "ground_truth_count": 10,
+      "detected_count": 22,
+      "key_entity_recall": 0.8,
+      "average_confidence": 0.8523,
+      "character_error_rate": 0.6063,
+      "word_error_rate": 0.3878,
+      "ocr_time_ms": 10010.451799999828,
+      "field_matches": [
+        {
+          "gt": "HIMALAYA SINCE 1930",
+          "status": "EXACT_FOUND",
+          "matched_text": "HIMALAYA SINCE 1930"
+        },
+        {
+          "gt": "PURIFYING NEEM FACE WASH",
+          "status": "EXACT_FOUND",
+          "matched_text": "PURIFYING NEEM FACE WASH"
+        },
+        {
+          "gt": "Net Volume: 100 ml",
+          "status": "EXACT_FOUND",
+          "matched_text": "Net Volume: 100 ml"
+        },
+        {
+          "gt": "MRP (inclusive of all taxes): Rs. 165.00",
+          "status": "FUZZY_MATCH",
+          "similarity": 0.72,
+          "matched_text": "MRP (inclusive of all taxes):"
+        },
+        {
+          "gt": "Batch / Lot No.: HFW-409B",
+          "status": "MISSED",
+          "similarity": 0.32,
+          "matched_text": "HFW-409B"
+        },
+        {
+          "gt": "Date of Mfg: 25/08/2026",
+          "status": "EXACT_FOUND",
+          "matched_text": "Date of Mfg: 25/08/2026"
+        },
+        {
+          "gt": "Use Before: 36 Months from MFD",
+          "status": "EXACT_FOUND",
+          "matched_text": "Use Before: 36 Months from MFD"
+        },
+        {
+          "gt": "Ayurvedic Lic. No.: AUS-520",
+          "status": "MISSED",
+          "similarity": 0.67,
+          "matched_text": "Ayurvedic Lic. No:"
+        },
+        {
+          "gt": "The Himalaya Drug Company",
+          "status": "EXACT_FOUND",
+          "matched_text": "The Himalaya Drug Company"
+        },
+        {
+          "gt": "1-800-208-1930",
+          "status": "EXACT_FOUND",
+          "matched_text": "1-800-208-1930"
+        }
+      ]
+    }
+  ]
+}

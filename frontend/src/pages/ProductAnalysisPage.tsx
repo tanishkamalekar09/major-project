@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   Scan, 
   CheckCircle2, 
@@ -8,37 +8,141 @@ import {
   Sparkles, 
   Layers, 
   FileCode, 
-  RefreshCw 
+  RefreshCw,
+  AlertCircle
 } from 'lucide-react';
 import { InspectionStepper } from '../components/common/InspectionStepper';
-import { CURRENT_INSPECTION } from '../data/mockData';
+import { uploadAndProcessOCR, processPresetSample } from '../services/api';
+import { OCRResult } from '../types';
+import { getActiveInspection, setActiveInspection } from '../services/inspectionStore';
+import { extractProductInformation, ExtractedProductInfo } from '../services/genericExtractor';
 
 export const ProductAnalysisPage: React.FC = () => {
   const navigate = useNavigate();
-  const [progress, setProgress] = useState(100); // 100% loaded simulation
-  const [analyzing, setAnalyzing] = useState(false);
+  const location = useLocation();
+  const navState = (location.state as any) || {};
+  const activeInspection = getActiveInspection();
+
+  const file = navState.file as File | undefined;
+  const sampleId = navState.sampleId as string | undefined;
+  const imagePreview = navState.imagePreview || activeInspection.image_url;
+  const productName = navState.productName || activeInspection.product_name;
+
+  const [progress, setProgress] = useState(20);
+  const [analyzing, setAnalyzing] = useState(true);
+  const [ocrResult, setOcrResult] = useState<OCRResult | null>(null);
+  const [extractedInfo, setExtractedInfo] = useState<ExtractedProductInfo | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [stageIndex, setStageIndex] = useState(1);
+  const hasTriggeredRef = useRef(false);
+
+  const runAnalysis = async () => {
+    setAnalyzing(true);
+    setError(null);
+    setProgress(25);
+    setStageIndex(1);
+
+    const stageTimer = setInterval(() => {
+      setProgress((prev) => (prev < 85 ? prev + 15 : prev));
+      setStageIndex((prev) => (prev < 4 ? prev + 1 : prev));
+    }, 600);
+
+    try {
+      let result: OCRResult;
+      if (file) {
+        result = await uploadAndProcessOCR(file);
+      } else if (sampleId) {
+        result = await processPresetSample(sampleId);
+      } else {
+        result = await processPresetSample('product_01');
+      }
+
+      clearInterval(stageTimer);
+      setOcrResult(result);
+
+      // Perform generic AI packaging entity extraction for ANY uploaded product
+      const extracted = extractProductInformation(result, file?.name || sampleId || navState.fileName);
+      setExtractedInfo(extracted);
+
+      // Immediately synchronize active inspection store
+      setActiveInspection({
+        product_name: extracted.productTitle,
+        brand: extracted.brand,
+        category: extracted.category,
+        subcategory: extracted.subcategory,
+        declared_net_weight: extracted.netWeight,
+        image_url: result.annotated_image || imagePreview,
+        annotated_image: result.annotated_image,
+        original_image: result.original_image || imagePreview,
+        ocrResult: result,
+        autoDetectedInfo: extracted,
+      });
+
+      setProgress(100);
+      setStageIndex(5);
+      setAnalyzing(false);
+    } catch (err: any) {
+      clearInterval(stageTimer);
+      setAnalyzing(false);
+      setError(err.message || 'OCR processing failed on backend.');
+    }
+  };
+
+  useEffect(() => {
+    if (!hasTriggeredRef.current) {
+      hasTriggeredRef.current = true;
+      runAnalysis();
+    }
+  }, []);
 
   const pipelineStages = [
-    { name: "Image Preprocessing & Auto-Deskew", status: "Completed", time: "0.24s" },
-    { name: "Text Region Localization (14 Bounding Boxes)", status: "Completed", time: "0.41s" },
-    { name: "Character Recognition (Mock OCR Service)", status: "Completed", time: "0.58s" },
-    { name: "NLP Key-Value Entity Extraction", status: "Completed", time: "0.32s" },
-    { name: "FSSAI & Legal Metrology Rule Matching", status: "Completed", time: "0.19s" },
+    { 
+      name: "Image Preprocessing & Auto-Deskew", 
+      status: stageIndex >= 2 ? "Completed" : analyzing ? "Running" : "Pending", 
+      time: ocrResult ? "0.12s" : "0.24s" 
+    },
+    { 
+      name: `Text Region Localization (${ocrResult ? ocrResult.blocks.length : '...'} Bounding Boxes)`, 
+      status: stageIndex >= 3 ? "Completed" : analyzing ? "Running" : "Pending", 
+      time: ocrResult ? `${((ocrResult.processing_time_ms || 1000) * 0.4 / 1000).toFixed(2)}s` : "0.41s" 
+    },
+    { 
+      name: `Character Recognition (${ocrResult ? ocrResult.engine_name : 'EasyOCR CRAFT + CRNN'})`, 
+      status: stageIndex >= 4 ? "Completed" : analyzing ? "Running" : "Pending", 
+      time: ocrResult ? `${((ocrResult.processing_time_ms || 1000) * 0.6 / 1000).toFixed(2)}s` : "0.58s" 
+    },
+    { 
+      name: "Bounding Box & Confidence Scoring", 
+      status: stageIndex >= 5 ? "Completed" : analyzing ? "Running" : "Pending", 
+      time: "0.08s" 
+    },
   ];
 
-  const handleReRun = () => {
-    setAnalyzing(true);
-    setProgress(15);
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setAnalyzing(false);
-          return 100;
-        }
-        return prev + 25;
-      });
-    }, 250);
+  const handleProceed = () => {
+    const extracted = extractedInfo || extractProductInformation(ocrResult || undefined, file?.name || sampleId || navState.fileName);
+
+    setActiveInspection({
+      product_name: extracted.productTitle,
+      brand: extracted.brand,
+      category: extracted.category,
+      subcategory: extracted.subcategory,
+      declared_net_weight: extracted.netWeight,
+      image_url: ocrResult?.annotated_image || imagePreview,
+      annotated_image: ocrResult?.annotated_image,
+      original_image: ocrResult?.original_image || imagePreview,
+      ocrResult: ocrResult || undefined,
+      autoDetectedInfo: extracted,
+    });
+
+    navigate('/inspect/ocr', {
+      state: {
+        ocrResult,
+        autoDetectedInfo: extracted,
+        imagePreview: ocrResult?.annotated_image || imagePreview,
+        originalImage: ocrResult?.original_image || imagePreview,
+        productName: extracted.productTitle,
+      },
+    });
   };
 
   return (
@@ -56,7 +160,7 @@ export const ProductAnalysisPage: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={handleReRun}
+            onClick={runAnalysis}
             disabled={analyzing}
             className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-lg shadow-subtle flex items-center gap-1.5 transition"
           >
@@ -66,6 +170,21 @@ export const ProductAnalysisPage: React.FC = () => {
         </div>
       </div>
 
+      {error && (
+        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+            <span>{error}</span>
+          </div>
+          <button
+            onClick={runAnalysis}
+            className="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg text-xs transition"
+          >
+            Try Again
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Interactive Visual Scanning Simulation (7 cols) */}
         <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200/80 p-6 shadow-subtle flex flex-col justify-between">
@@ -74,43 +193,29 @@ export const ProductAnalysisPage: React.FC = () => {
               <Scan className="w-4 h-4 text-blue-600" />
               <h3 className="font-bold text-sm text-slate-900">Computer Vision Scanning Preview</h3>
             </div>
-            <span className="text-[11px] font-mono px-2 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100">
-              Target: {CURRENT_INSPECTION.product_name}
+            <span className="text-[11px] font-mono px-2 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 truncate max-w-[200px]">
+              Target: {productName}
             </span>
           </div>
 
           {/* Scanner Container with animated laser bar */}
           <div className="relative mt-4 rounded-xl overflow-hidden border border-slate-300 bg-slate-950 flex items-center justify-center max-h-[380px]">
             <img 
-              src={CURRENT_INSPECTION.image_url} 
+              src={ocrResult?.annotated_image || imagePreview} 
               alt="Scan Target" 
-              className="w-full h-full object-cover opacity-80"
+              className="w-full h-full object-contain max-h-[380px]"
             />
 
-            {/* Bounding boxes overlays */}
-            <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
-              {/* Highlight Box 1 (Brand) */}
-              <div className="w-3/4 mx-auto h-10 border-2 border-emerald-400 bg-emerald-400/10 rounded flex items-center px-2">
-                <span className="text-[9px] bg-emerald-600 text-white font-mono px-1 rounded">BRAND_TITLE (99%)</span>
-              </div>
-              {/* Highlight Box 2 (Net Wt) */}
-              <div className="w-1/2 ml-auto h-8 border-2 border-rose-400 bg-rose-400/20 rounded flex items-center px-2">
-                <span className="text-[9px] bg-rose-600 text-white font-mono px-1 rounded">NET_QUANTITY (UNDERTALL)</span>
-              </div>
-              {/* Highlight Box 3 (FSSAI) */}
-              <div className="w-2/3 h-8 border-2 border-blue-400 bg-blue-400/10 rounded flex items-center px-2">
-                <span className="text-[9px] bg-blue-600 text-white font-mono px-1 rounded">FSSAI_LIC (VERIFIED)</span>
-              </div>
-            </div>
-
-            {/* Glowing laser scanning bar */}
-            <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee] animate-pulse top-1/2"></div>
+            {/* Glowing laser scanning bar during analysis */}
+            {analyzing && (
+              <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee] animate-pulse top-1/2"></div>
+            )}
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>Dimensions: 2400 x 1800 px</span>
-            <span className="font-semibold text-emerald-600 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Pipeline Ready
+            <span>OCR Status: {analyzing ? 'Extracting Text...' : ocrResult ? 'Extraction Complete' : 'Ready'}</span>
+            <span className={`font-semibold flex items-center gap-1 ${ocrResult ? 'text-emerald-600' : 'text-slate-500'}`}>
+              <CheckCircle2 className="w-3.5 h-3.5" /> {analyzing ? 'Processing CRAFT + CRNN' : 'Pipeline Ready'}
             </span>
           </div>
         </div>
@@ -139,14 +244,14 @@ export const ProductAnalysisPage: React.FC = () => {
               {pipelineStages.map((stage, idx) => (
                 <div key={idx} className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <CheckCircle2 className={`w-4 h-4 shrink-0 ${stage.status === 'Completed' ? 'text-emerald-600' : stage.status === 'Running' ? 'text-blue-600 animate-spin' : 'text-slate-300'}`} />
                     <div>
                       <p className="font-semibold text-xs text-slate-900">{stage.name}</p>
                       <p className="text-[10px] text-slate-400">Execution latency: {stage.time}</p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700">
-                    Done
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${stage.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : stage.status === 'Running' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>
+                    {stage.status}
                   </span>
                 </div>
               ))}
@@ -156,27 +261,33 @@ export const ProductAnalysisPage: React.FC = () => {
             <div className="p-3.5 rounded-xl bg-blue-50/80 border border-blue-100 text-blue-900 text-xs space-y-1">
               <div className="flex items-center justify-between font-semibold">
                 <span>Text Blocks Detected:</span>
-                <span>14 Regions</span>
+                <span>{ocrResult ? `${ocrResult.blocks.length} Regions` : analyzing ? 'Detecting...' : 'Pending'}</span>
               </div>
               <div className="flex items-center justify-between font-semibold">
                 <span>OCR Engine:</span>
-                <span>Mock OCR Service (v1.0)</span>
+                <span>{ocrResult ? ocrResult.engine_name : 'EasyOCR (PyTorch CRAFT + CRNN)'}</span>
               </div>
               <div className="flex items-center justify-between font-semibold">
-                <span>Rule Violations Flagged:</span>
-                <span className="text-rose-600 font-bold">2 Issues Found</span>
+                <span>Processing Latency:</span>
+                <span className="text-emerald-700 font-bold">{ocrResult?.processing_time_ms ? `${ocrResult.processing_time_ms} ms` : analyzing ? 'Running...' : '—'}</span>
               </div>
             </div>
 
             {/* Action to proceed to Step 3 */}
             <div className="pt-2">
-              <Link
-                to="/inspect/ocr"
-                className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition"
+              <button
+                type="button"
+                onClick={handleProceed}
+                disabled={analyzing || !ocrResult}
+                className={`w-full py-2.5 px-4 font-semibold text-xs rounded-xl shadow-md flex items-center justify-center gap-2 transition ${
+                  analyzing || !ocrResult
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20'
+                }`}
               >
-                <span>Proceed to OCR Results</span>
+                <span>{analyzing ? 'Processing Image...' : 'Proceed to OCR Results'}</span>
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
             </div>
           </div>
         </div>

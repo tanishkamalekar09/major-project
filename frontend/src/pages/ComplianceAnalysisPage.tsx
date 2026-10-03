@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ShieldAlert, 
@@ -12,19 +12,22 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { InspectionStepper } from '../components/common/InspectionStepper';
-import { MOCK_COMPLIANCE_RULES, CURRENT_INSPECTION } from '../data/mockData';
+import { getActiveInspection } from '../services/inspectionStore';
+import { getDynamicComplianceRules } from '../services/genericExtractor';
 
 export const ComplianceAnalysisPage: React.FC = () => {
+  const activeInspection = getActiveInspection();
+  const complianceRules = useMemo(() => getDynamicComplianceRules(activeInspection), [activeInspection]);
   const [statusFilter, setStatusFilter] = useState<'all' | 'failed' | 'warning' | 'passed'>('all');
 
-  const filteredRules = MOCK_COMPLIANCE_RULES.filter((rule) => {
+  const filteredRules = complianceRules.filter((rule) => {
     if (statusFilter === 'all') return true;
     return rule.status === statusFilter;
   });
 
-  const failedCount = MOCK_COMPLIANCE_RULES.filter(r => r.status === 'failed').length;
-  const warningCount = MOCK_COMPLIANCE_RULES.filter(r => r.status === 'warning').length;
-  const passedCount = MOCK_COMPLIANCE_RULES.filter(r => r.status === 'passed').length;
+  const failedCount = complianceRules.filter(r => r.status === 'failed').length;
+  const warningCount = complianceRules.filter(r => r.status === 'warning').length;
+  const passedCount = complianceRules.filter(r => r.status === 'passed').length;
 
   return (
     <div className="space-y-6 animate-fade-in">

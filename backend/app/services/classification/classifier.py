@@ -567,6 +567,17 @@ class ProductClassifier:
             if scores["Biscuits"] > 4.0 or scores["Packaged Sweets"] > 4.0:
                 scores["Dairy Products"] = max(0.0, scores["Dairy Products"] - 6.0)
 
+        # Conflict G: Commodity ingredients (salt, sugar, flour) vs Specific Finished Products (e.g. Bread, Biscuits, Noodles, Snacks)
+        # If Other Packaged Food did not match in product_name or top_lines, and another category matched in product_name or top_lines,
+        # penalize Other Packaged Food so common ingredient list words don't override the actual product.
+        if "product_name" not in matched_fields_map["Other Packaged Food"] and "top_lines" not in matched_fields_map["Other Packaged Food"]:
+            any_other_primary = any(
+                ("product_name" in matched_fields_map[c] or "top_lines" in matched_fields_map[c])
+                for c in scores if c != "Other Packaged Food"
+            )
+            if any_other_primary:
+                scores["Other Packaged Food"] = max(0.0, scores["Other Packaged Food"] - 15.0)
+
         # ---------------------------------------------------------------------
         # 5. Winner Selection & Minimum Confidence Threshold
         # ---------------------------------------------------------------------

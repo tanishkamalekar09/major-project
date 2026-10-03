@@ -1,0 +1,439 @@
+{
+  "total_evaluated": 20,
+  "category_matches": 19,
+  "measured_accuracy_pct": 95.0,
+  "results": [
+    {
+      "id": "product_01",
+      "description": "1. Biscuit",
+      "file": "product_01.jpg",
+      "expected_category": "Biscuits",
+      "expected_subcategory": "Cookies",
+      "detected_category": "Biscuits",
+      "detected_subcategory": "Cookies",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "butter cookies",
+        "cookie",
+        "good day"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 49.85,
+      "status": "PASS",
+      "latency_ms": 5542.3
+    },
+    {
+      "id": "product_11_chips",
+      "description": "2. Chips",
+      "file": "product_11_chips.jpg",
+      "expected_category": "Packaged Snacks",
+      "expected_subcategory": "Potato Chips",
+      "detected_category": "Packaged Snacks",
+      "detected_subcategory": "Potato Chips",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "chips",
+        "potato chips"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 39.5,
+      "status": "PASS",
+      "latency_ms": 5244.7
+    },
+    {
+      "id": "product_02",
+      "description": "3. Namkeen",
+      "file": "product_02.jpg",
+      "expected_category": "Packaged Snacks",
+      "expected_subcategory": "Bhujia",
+      "detected_category": "Packaged Snacks",
+      "detected_subcategory": "Bhujia",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "aloo bhujia",
+        "bhujia",
+        "snack"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 54.0,
+      "status": "PASS",
+      "latency_ms": 4927.7
+    },
+    {
+      "id": "product_08",
+      "description": "4. Noodles",
+      "file": "product_08.jpg",
+      "expected_category": "Noodles / Pasta",
+      "expected_subcategory": "Instant Noodles",
+      "detected_category": "Noodles / Pasta",
+      "detected_subcategory": "Instant Noodles",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "2-minute noodles",
+        "maggi",
+        "noodles"
+      ],
+      "matched_fields": [
+        "product_name",
+        "brand_name",
+        "top_lines",
+        "raw_text"
+      ],
+      "classification_score": 53.9,
+      "status": "PASS",
+      "latency_ms": 4898.7
+    },
+    {
+      "id": "product_09",
+      "description": "5. Beverage",
+      "file": "product_09.jpg",
+      "expected_category": "Beverages",
+      "expected_subcategory": "Packaged Water",
+      "detected_category": "Beverages",
+      "detected_subcategory": "Packaged Water",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "mineral water",
+        "natural mineral water"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 36.0,
+      "status": "PASS",
+      "latency_ms": 4828.8
+    },
+    {
+      "id": "product_03",
+      "description": "6. Edible Oil",
+      "file": "product_03.jpg",
+      "expected_category": "Edible Oils",
+      "expected_subcategory": "Coconut Oil",
+      "detected_category": "Edible Oils",
+      "detected_subcategory": "Coconut Oil",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "coconut oil",
+        "oil",
+        "pure coconut oil"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 46.35,
+      "status": "PASS",
+      "latency_ms": 4716.2
+    },
+    {
+      "id": "product_07",
+      "description": "7. Dairy Product",
+      "file": "product_07.jpg",
+      "expected_category": "Dairy Products",
+      "expected_subcategory": "Milk",
+      "detected_category": "Dairy Products",
+      "detected_subcategory": "Milk",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "amul taaza",
+        "milk",
+        "toned milk"
+      ],
+      "matched_fields": [
+        "product_name",
+        "brand_name",
+        "top_lines",
+        "raw_text"
+      ],
+      "classification_score": 48.15,
+      "status": "PASS",
+      "latency_ms": 4681.0
+    },
+    {
+      "id": "product_12_spice",
+      "description": "8. Spice/Masala",
+      "file": "product_12_spice.jpg",
+      "expected_category": "Spices / Masala",
+      "expected_subcategory": "Turmeric",
+      "detected_category": "Spices / Masala",
+      "detected_subcategory": "Turmeric",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "spice",
+        "turmeric"
+      ],
+      "matched_fields": [
+        "product_name",
+        "ingredients",
+        "raw_text"
+      ],
+      "classification_score": 34.02,
+      "status": "PASS",
+      "latency_ms": 4285.7
+    },
+    {
+      "id": "product_13_cereal",
+      "description": "9. Breakfast Cereal",
+      "file": "product_13_cereal.jpg",
+      "expected_category": "Breakfast Cereals",
+      "expected_subcategory": "Corn Flakes",
+      "detected_category": "Breakfast Cereals",
+      "detected_subcategory": "Corn Flakes",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "cereal",
+        "corn flakes"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 36.0,
+      "status": "PASS",
+      "latency_ms": 4413.9
+    },
+    {
+      "id": "product_14_sauce",
+      "description": "10. Sauce/Jam",
+      "file": "product_14_sauce.jpg",
+      "expected_category": "Sauces / Spreads",
+      "expected_subcategory": "Tomato Ketchup / Sauce",
+      "detected_category": "Sauces / Spreads",
+      "detected_subcategory": "Tomato Ketchup / Sauce",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "ketchup",
+        "sauce"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 33.3,
+      "status": "PASS",
+      "latency_ms": 5815.2
+    },
+    {
+      "id": "product_15_bakery",
+      "description": "Bakery (Bread)",
+      "file": "product_15_bakery.jpg",
+      "expected_category": "Bakery Products",
+      "expected_subcategory": "Bread",
+      "detected_category": "Other Packaged Food",
+      "detected_subcategory": "Iodized Salt",
+      "confidence": 0.87,
+      "method": "rule_based",
+      "matched_keywords": [
+        "flour",
+        "salt",
+        "sweetener"
+      ],
+      "matched_fields": [
+        "ingredients",
+        "raw_text"
+      ],
+      "classification_score": 20.7,
+      "status": "FAIL (Exp: Bakery Products)",
+      "latency_ms": 6434.1
+    },
+    {
+      "id": "product_16_sweets",
+      "description": "Packaged Sweets (Chocolate)",
+      "file": "product_16_sweets.jpg",
+      "expected_category": "Packaged Sweets",
+      "expected_subcategory": "Chocolates",
+      "detected_category": "Packaged Sweets",
+      "detected_subcategory": "Chocolates",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "chocolate",
+        "chocolate brand",
+        "dark chocolate",
+        "sweet"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 58.5,
+      "status": "PASS",
+      "latency_ms": 7079.1
+    },
+    {
+      "id": "product_04",
+      "description": "Other Packaged Food (Honey)",
+      "file": "product_04.jpg",
+      "expected_category": "Other Packaged Food",
+      "expected_subcategory": "Honey",
+      "detected_category": "Other Packaged Food",
+      "detected_subcategory": "Honey",
+      "confidence": 0.99,
+      "method": "rule_based",
+      "matched_keywords": [
+        "honey",
+        "sweetener"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 18.9,
+      "status": "PASS",
+      "latency_ms": 6477.8
+    },
+    {
+      "id": "product_05",
+      "description": "Other Packaged Food (Salt)",
+      "file": "product_05.jpg",
+      "expected_category": "Other Packaged Food",
+      "expected_subcategory": "Iodized Salt",
+      "detected_category": "Other Packaged Food",
+      "detected_subcategory": "Iodized Salt",
+      "confidence": 0.97,
+      "method": "rule_based",
+      "matched_keywords": [
+        "salt"
+      ],
+      "matched_fields": [
+        "product_name",
+        "brand_name",
+        "raw_text"
+      ],
+      "classification_score": 25.2,
+      "status": "PASS",
+      "latency_ms": 6266.7
+    },
+    {
+      "id": "product_17_poor_ocr",
+      "description": "Edge Case: Poor OCR (Blurred / Degraded)",
+      "file": "product_17_poor_ocr.jpg",
+      "expected_category": "Packaged Snacks",
+      "expected_subcategory": null,
+      "detected_category": "Packaged Snacks",
+      "detected_subcategory": "Potato Chips",
+      "confidence": 0.93,
+      "method": "rule_based",
+      "matched_keywords": [
+        "chips",
+        "potato chips",
+        "snack"
+      ],
+      "matched_fields": [
+        "product_name",
+        "raw_text"
+      ],
+      "classification_score": 40.5,
+      "status": "PASS",
+      "latency_ms": 5890.7
+    },
+    {
+      "id": "product_18_missing_name",
+      "description": "Edge Case: Missing Product Name",
+      "file": "product_18_missing_name.jpg",
+      "expected_category": "Unknown",
+      "expected_subcategory": null,
+      "detected_category": "Unknown",
+      "detected_subcategory": null,
+      "confidence": null,
+      "method": "insufficient_information",
+      "matched_keywords": [],
+      "matched_fields": [],
+      "classification_score": 0.0,
+      "status": "PASS",
+      "latency_ms": 6533.3
+    },
+    {
+      "id": "product_19_unknown",
+      "description": "Edge Case: Unknown (Hardware Toolset)",
+      "file": "product_19_unknown.jpg",
+      "expected_category": "Unknown",
+      "expected_subcategory": null,
+      "detected_category": "Unknown",
+      "detected_subcategory": null,
+      "confidence": null,
+      "method": "insufficient_information",
+      "matched_keywords": [],
+      "matched_fields": [],
+      "classification_score": 0.0,
+      "status": "PASS",
+      "latency_ms": 6105.7
+    },
+    {
+      "id": "product_06",
+      "description": "Edge Case: Unknown (Handwash / Non-food)",
+      "file": "product_06.jpg",
+      "expected_category": "Unknown",
+      "expected_subcategory": null,
+      "detected_category": "Unknown",
+      "detected_subcategory": null,
+      "confidence": null,
+      "method": "insufficient_information",
+      "matched_keywords": [
+        "handwash"
+      ],
+      "matched_fields": [
+        "non_food_indicator"
+      ],
+      "classification_score": 0.0,
+      "status": "PASS",
+      "latency_ms": 6483.5
+    },
+    {
+      "id": "product_10",
+      "description": "Edge Case: Unknown (Face Wash / Cosmetic)",
+      "file": "product_10.jpg",
+      "expected_category": "Unknown",
+      "expected_subcategory": null,
+      "detected_category": "Unknown",
+      "detected_subcategory": null,
+      "confidence": null,
+      "method": "insufficient_information",
+      "matched_keywords": [
+        "face wash"
+      ],
+      "matched_fields": [
+        "non_food_indicator"
+      ],
+      "classification_score": 0.0,
+      "status": "PASS",
+      "latency_ms": 7028.2
+    },
+    {
+      "id": "blank_image",
+      "description": "Edge Case: Empty OCR (Blank Image)",
+      "file": "blank_image.jpg",
+      "expected_category": "Unknown",
+      "expected_subcategory": null,
+      "detected_category": "Unknown",
+      "detected_subcategory": null,
+      "confidence": null,
+      "method": "insufficient_information",
+      "matched_keywords": [],
+      "matched_fields": [],
+      "classification_score": 0.0,
+      "status": "PASS",
+      "latency_ms": 2551.1
+    }
+  ]
+}

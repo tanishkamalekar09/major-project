@@ -31,18 +31,6 @@ export interface ProductInformationResponse {
   product_category?: ExtractedFieldItem | null;
 }
 
-export interface ProductClassificationResponse {
-  category: string;
-  subcategory?: string | null;
-  confidence?: number | null;
-  method: string;
-  matched_keywords?: string[];
-  matched_fields?: string[];
-  classification_score?: number;
-  selected_category?: string;
-  selected_subcategory?: string | null;
-}
-
 export interface OCRResult {
   raw_text: string;
   blocks: OCRTextBlock[];
@@ -56,7 +44,6 @@ export interface OCRResult {
     bounding_boxes: any[];
   };
   product_information?: ProductInformationResponse;
-  classification?: ProductClassificationResponse;
 }
 
 export interface ProductInspection {

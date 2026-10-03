@@ -14,8 +14,7 @@ from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 from pydantic import BaseModel
 
 from ..services.ocr import get_ocr_service, OCRResult
-from ..services.extraction import InformationExtractor, OCRInfo, ProductInformation, ExtractedField
-from ..services.classification import ProductClassifier
+from ..services.extraction import InformationExtractor, OCRInfo, ProductInformation
 
 router = APIRouter(prefix="/ocr", tags=["OCR Text Extraction"])
 
@@ -71,19 +70,6 @@ async def upload_and_process_ocr(
             bounding_boxes=[b.bounding_box or b.box for b in result.blocks]
         )
 
-        # STEP 5: Product Classification
-        classifier = ProductClassifier()
-        result.classification = classifier.classify(
-            ocr_result=result,
-            product_information=result.product_information
-        )
-        if result.classification and result.classification.category != "Unknown" and result.product_information:
-            result.product_information.product_category = ExtractedField(
-                value=result.classification.category,
-                confidence=result.classification.confidence,
-                source_text=", ".join(result.classification.matched_keywords or []) or result.classification.category
-            )
-
         return result
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
@@ -100,26 +86,16 @@ def get_sample_presets():
     Returns available pre-loaded academic test packaging samples for 1-click testing.
     """
     presets = [
-        {"id": "product_01", "name": "Britannia Good Day Butter Cookies", "category": "Biscuits / Carton", "file": "product_01.jpg"},
-        {"id": "product_11_chips", "name": "Lay's Magic Masala Potato Chips", "category": "Packaged Snacks / Pouch", "file": "product_11_chips.jpg"},
-        {"id": "product_02", "name": "Haldiram's Aloo Bhujia", "category": "Packaged Snacks / Pouch", "file": "product_02.jpg"},
-        {"id": "product_08", "name": "Maggi 2-Minute Masala Noodles", "category": "Noodles / Pasta / Pouch", "file": "product_08.jpg"},
-        {"id": "product_09", "name": "Himalayan Natural Mineral Water", "category": "Beverages / Bottle", "file": "product_09.jpg"},
-        {"id": "product_03", "name": "Parachute 100% Pure Coconut Oil", "category": "Edible Oils / Bottle", "file": "product_03.jpg"},
-        {"id": "product_07", "name": "Amul Taaza Toned Milk", "category": "Dairy Products / Tetra Pak", "file": "product_07.jpg"},
-        {"id": "product_12_spice", "name": "Everest Pure Turmeric Powder Spice", "category": "Spices / Masala / Carton", "file": "product_12_spice.jpg"},
-        {"id": "product_13_cereal", "name": "Kellogg's Corn Flakes Breakfast Cereal", "category": "Breakfast Cereals / Carton", "file": "product_13_cereal.jpg"},
-        {"id": "product_14_sauce", "name": "Kissan Fresh Tomato Ketchup Sauce", "category": "Sauces / Spreads / Bottle", "file": "product_14_sauce.jpg"},
-        {"id": "product_15_bakery", "name": "Britannia 100% Whole Wheat Bread", "category": "Bakery Products / Wrapper", "file": "product_15_bakery.jpg"},
-        {"id": "product_16_sweets", "name": "Cadbury Dairy Milk Chocolate Sweet", "category": "Packaged Sweets / Flow Wrap", "file": "product_16_sweets.jpg"},
-        {"id": "product_04", "name": "Dabur 100% Pure Natural Honey", "category": "Other Packaged Food / Jar", "file": "product_04.jpg"},
-        {"id": "product_05", "name": "Tata Salt Vacuum Evaporated", "category": "Other Packaged Food / Pouch", "file": "product_05.jpg"},
-        {"id": "product_17_poor_ocr", "name": "Degraded Packaging (Poor OCR Test)", "category": "Edge Case / Degraded", "file": "product_17_poor_ocr.jpg"},
-        {"id": "product_18_missing_name", "name": "No Product Name (Incomplete Packaging)", "category": "Edge Case / Missing Field", "file": "product_18_missing_name.jpg"},
-        {"id": "product_19_unknown", "name": "Stanley Screwdriver Hardware Set", "category": "Unknown / Non-Food", "file": "product_19_unknown.jpg"},
-        {"id": "product_06", "name": "Dettol Original Liquid Handwash", "category": "Unknown / Non-Food Hygiene", "file": "product_06.jpg"},
-        {"id": "product_10", "name": "Himalaya Purifying Neem Face Wash", "category": "Unknown / Non-Food Cosmetic", "file": "product_10.jpg"},
-        {"id": "blank_image", "name": "Blank Empty Image (0 Text)", "category": "Edge Case / Empty", "file": "blank_image.jpg"},
+        {"id": "product_01", "name": "Britannia Good Day Butter Cookies", "category": "Bakery / Carton", "file": "product_01.jpg"},
+        {"id": "product_02", "name": "Haldiram's Aloo Bhujia", "category": "Snacks / Pouch", "file": "product_02.jpg"},
+        {"id": "product_03", "name": "Parachute 100% Pure Coconut Oil", "category": "Personal Care / Bottle", "file": "product_03.jpg"},
+        {"id": "product_04", "name": "Dabur 100% Pure Natural Honey", "category": "Nutritional / Jar", "file": "product_04.jpg"},
+        {"id": "product_05", "name": "Tata Salt Vacuum Evaporated", "category": "Commodity / Pouch", "file": "product_05.jpg"},
+        {"id": "product_06", "name": "Dettol Original Liquid Handwash", "category": "Hygiene / Pump Bottle", "file": "product_06.jpg"},
+        {"id": "product_07", "name": "Amul Taaza Toned Milk", "category": "Dairy / Tetra Pak", "file": "product_07.jpg"},
+        {"id": "product_08", "name": "Maggi 2-Minute Masala Noodles", "category": "Instant Food / Pouch", "file": "product_08.jpg"},
+        {"id": "product_09", "name": "Himalayan Natural Mineral Water", "category": "Beverage / Bottle", "file": "product_09.jpg"},
+        {"id": "product_10", "name": "Himalaya Purifying Neem Face Wash", "category": "Cosmetic / Tube", "file": "product_10.jpg"},
     ]
     return {"presets": presets}
 
@@ -153,19 +129,6 @@ def process_preset_sample(
             confidence=[b.confidence for b in result.blocks],
             bounding_boxes=[b.bounding_box or b.box for b in result.blocks]
         )
-
-        # STEP 5: Product Classification
-        classifier = ProductClassifier()
-        result.classification = classifier.classify(
-            ocr_result=result,
-            product_information=result.product_information
-        )
-        if result.classification and result.classification.category != "Unknown" and result.product_information:
-            result.product_information.product_category = ExtractedField(
-                value=result.classification.category,
-                confidence=result.classification.confidence,
-                source_text=", ".join(result.classification.matched_keywords or []) or result.classification.category
-            )
 
         return result
     except Exception as err:

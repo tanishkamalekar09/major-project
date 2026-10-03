@@ -11,7 +11,6 @@ class OCRTextBlock(BaseModel):
     box: Optional[dict] = None  # Normalized percent coordinates {x, y, w, h} for CSS overlay
 
 from ...schemas.extraction import OCRInfo, ProductInformation
-from ...schemas.classification import ProductClassification
 
 class OCRResult(BaseModel):
     """
@@ -28,9 +27,6 @@ class OCRResult(BaseModel):
     # STEP 4: Structured Information Extraction
     ocr: Optional[OCRInfo] = None
     product_information: Optional[ProductInformation] = None
-
-    # STEP 5: Product Classification
-    classification: Optional[ProductClassification] = None
 
 class BaseOCRService(ABC):
     """
